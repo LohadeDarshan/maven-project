@@ -7,11 +7,11 @@ pipeline {
       }
     }
 
-    stage('compile the job') //validate then compile
+    stage('package job') //validate then compile and package
     {
       steps {
         withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
-          sh 'mvn compile'
+          sh 'mvn package'
         }
       }
     }
