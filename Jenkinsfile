@@ -15,5 +15,15 @@ pipeline {
         }
       }
     }
+
+    stage('deploy job') //validate then compile and package
+    {
+      steps {
+        sshagent(['deploy-to-tomcat']) {
+          sh 'scp -o StrictHostKeyChecking=no webapp/target/ec2-user@172.31.13.100:usr/share/tomcat/webapps'
+          }
+        }
+      }
+    }
   }
 }
