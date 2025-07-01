@@ -3,14 +3,14 @@ pipeline {
   stages {
     stage('scm checkout') {
       steps {
-        git branch: 'master', url: 'https://github.com/kumargaurav039/maven-project.git'
+        git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
       }
     }
 
     stage('package job') //validate then compile and package
     {
       steps {
-        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'MVN_HOME', mavenSettingsConfig: '', traceability: true) {
+        withMaven(globalMavenSettingsConfig: '', jdk: 'JDK_HOME', maven: 'jenkins-maven', mavenSettingsConfig: '', traceability: true) {
           sh 'mvn package'
         }
       }
@@ -20,7 +20,7 @@ pipeline {
     {
       steps {
         sshagent(['deploy-to-tomcat']) {
-          sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war ec2-user@172.31.13.100:usr/share/tomcat/webapps'
+          sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@192.168.253.143:usr/share/tomcat/webapps'
           }
         }
       }
