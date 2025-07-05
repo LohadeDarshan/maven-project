@@ -6,12 +6,12 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
             }
         }
-        
-        stage('code validate') //validate then compile and package
+
+        stage('code compile') //validate then compile and package
         {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh 'mvn validate'
+                    sh 'mvn compile'  // validate + compile 
                 }
             }
         }
