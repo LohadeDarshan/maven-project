@@ -6,6 +6,8 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
             }
         }
+
+
         
         stage('code validate') //validate then compile and package
         {
