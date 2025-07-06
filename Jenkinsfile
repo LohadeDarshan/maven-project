@@ -44,7 +44,7 @@ pipeline {
         {
             steps{
                 sshagent(['ClientCICD']) {
-                    sh 'scp -o StrictHostKeyChecking=no /webapp/target/webapp.war root@192.168.253.143:/opt/tomcat/webapps'
+                    sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@192.168.253.143:/opt/tomcat/webapps'
                     }
   
             }
