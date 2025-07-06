@@ -43,8 +43,10 @@ pipeline {
         stage('code deploy') 
         {
             steps{
-
-                sh 'scp /webapp/target/webapp.war root@192.168.253.143:/opt/tomcat/webapps'  
+                sshagent(['ClientCICD']) {
+                    sh 'scp -o StrictHostKeyChecking=no /webapp/target/webapp.war root@192.168.253.143:/opt/tomcat/webapps'
+                    }
+  
             }
 
 
