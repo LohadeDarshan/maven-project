@@ -1,4 +1,4 @@
-<Html>    
+<!DOCTYPE Html>    
 <Head>  
 <title>  
 Example of Header-levels  
