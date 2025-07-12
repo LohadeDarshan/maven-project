@@ -6,7 +6,6 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
             }
         }
-
         stage('code validate') //validate then compile and package
         {
             steps {
@@ -15,7 +14,7 @@ pipeline {
                 }
             }
         }
-        stage('code compile') 
+        stage('code compile')
         {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
@@ -35,21 +34,11 @@ pipeline {
         {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh 'mvn package'  // validate + compile + test + package 
+                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
+                        sh 'mvn package sonar:sonar'
+                    }
                 }
             }
         }
-
-        stage('code deploy') 
-        {
-            steps{
-                sshagent(['ClientCICD']) {
-                    sh 'scp -o StrictHostKeyChecking=no /webapp/target/webapp.war root@192.168.253.143:/opt/tomcat/webapps'
-                    }
-  
-            }
-
-
-            }
-        }
     }
+}
