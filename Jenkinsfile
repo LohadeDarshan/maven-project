@@ -6,7 +6,6 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
             }
         }
-        
         stage('code compile')
         {
             steps {
@@ -24,17 +23,16 @@ pipeline {
             }
         }
         stage('create docker image') {
-      steps {
-        sh 'docker build -t myserverd/ethans954:latest .'
-      }
-    }
-        stage('push docker image to dockerhub') {
-      steps {
-            withDockerRegistry(credentialsId: 'DockerHUBCred', url: 'https://index.docker.io/v1/') {
-                   sh 'docker push myserverd/ethans954:latest'
-          }
-            
+            steps {
+                sh 'docker build -t myserverd/ethans954:latest .'
+            }
         }
-      }
+        stage('push docker image to dockerhub') {
+            steps {
+                withDockerRegistry(credentialsId: 'DockerHUBCred', url: 'https://index.docker.io/v1/') {
+                    sh 'docker push myserverd/ethans954:latest'
+                }
+            }
+        }
     }
-    }
+}
