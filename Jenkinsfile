@@ -6,14 +6,7 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/LohadeDarshan/maven-project.git'
             }
         }
-        stage('code validate') //validate then compile and package
-        {
-            steps {
-                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh 'mvn validate'  // validate the code
-                }
-            }
-        }
+        
         stage('code compile')
         {
             steps {
@@ -22,23 +15,26 @@ pipeline {
                 }
             }
         }
-        stage('code test')
+        stage('build the code')
         {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh 'mvn test'  // test
+                    sh 'mvn clean package'  // build the code
                 }
             }
         }
-        stage('code build')
-        {
-            steps {
-                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
-                        sh 'mvn package sonar:sonar'
-                    }
-                }
-            }
-        }
+        stage('create docker image') {
+      steps {
+        sh 'docker build -t myserverd/ethans954:latest .'
+      }
     }
-}
+        stage('push docker image to dockerhub') {
+      steps {
+            withDockerRegistry(credentialsId: 'DockerHUBCred', url: 'https://index.docker.io/v1/') {
+                   sh 'docker push myserverd/ethans954:latest'
+          }
+            
+        }
+      }
+    }
+    }
