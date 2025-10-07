@@ -43,7 +43,7 @@ pipeline {
             steps {
                 
                 sshagent(['ClientCICD']) {
-                  sh 'scp webapp/target/webapp.war root@10.23.213.210:/var/lib/tomcat10/webapps'
+                  sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@10.23.213.210:/var/lib/tomcat10/webapps'
             }
                 }
             }
