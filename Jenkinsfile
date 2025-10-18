@@ -41,8 +41,8 @@ pipeline {
         }
         stage('push docker image to dockerhub') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerHubCred', url: 'https://index.docker.io/v1/') {
-                    sh 'docker push myserverd/ethans954:latest'
+            withDockerRegistry(credentialsId: 'dockerHubCred', url: 'https://index.docker.io/v1/') {
+                sh 'docker push myserverd/ethans954:latest'
                 }
             }
         }
