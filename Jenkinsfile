@@ -36,20 +36,20 @@ pipeline {
         }
         stage('create docker image') {
             steps {
-                sh 'docker build -t e31531469/ethans954:latest1 .'
+                sh 'docker build -t myserverd/ethans954:latest1 .'
             }
         }
         stage('push docker image to dockerhub') {
             steps {
-                withDockerRegistry(credentialsId: 'DockerHubCredentials', url: 'https://index.docker.io/v1/') {
-                    sh 'docker push e31531469/ethans954:latest'
+                withDockerRegistry(credentialsId: 'dockerHubCred', url: 'https://index.docker.io/v1/') {
+                    sh 'docker push myserverd/ethans954:latest1'
                 }
             }
         }
         stage('code deploy') { // will deploy on target machine
             steps {
                 sshagent(['DevCICD']) {
-                    sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@10.23.213.210:/var/lib/tomcat10/webapps'
+                    sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@10.239.141.210:/var/lib/tomcat10/webapps'
                 }
             }
         }
