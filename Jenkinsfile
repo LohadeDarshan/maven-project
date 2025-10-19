@@ -31,7 +31,8 @@ pipeline {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
                     withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
-                    sh 'mvn package sonar:sonar'   // validate + compile + test + package
+                        sh 'mvn package sonar:sonar'   // validate + compile + test + package
+                    }
                 }
             }
         }
