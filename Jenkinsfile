@@ -30,19 +30,8 @@ pipeline {
         stage('code build') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    sh 'mvn package'   // validate + compile + test + package
-                }
-            }
-        }
-        stage('create docker image') {
-            steps {
-                sh 'docker build -t myserverd/ethans954:latest .'
-            }
-        }
-        stage('push docker image to dockerhub') {
-            steps {
-            withDockerRegistry(credentialsId: 'dockerHubCred', url: 'https://index.docker.io/v1/') {
-                sh 'docker push myserverd/ethans954:latest'
+                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
+                    sh 'mvn package sonar:sonar'   // validate + compile + test + package
                 }
             }
         }
