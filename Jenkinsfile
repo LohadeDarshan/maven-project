@@ -27,12 +27,21 @@ pipeline {
                 }
             }
         }
-        stage('code build') {
+        stage('code build and scan') {
             steps {
                 withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
                     withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
                         sh 'mvn package sonar:sonar'   // validate + compile + test + package
                     }
+                }
+            }
+        }
+        stage('deploy to tomcat server')
+        {
+            steps {
+                sshagent(['deploy-to-tomcat'])
+                {
+                    sh 'scp -o StrictHostKeyChecking=no webapp/target/webapp.war root@10.162.98.210:/usr/share/tomcat/webapps'
                 }
             }
         }
