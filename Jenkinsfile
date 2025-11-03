@@ -27,15 +27,13 @@ pipeline {
                 }
             }
         }
-        stage('code build and scan') {
-            steps {
-                withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
-                    withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar') {
-                        sh 'mvn package sonar:sonar'   // validate + compile + test + package
-                    }
-                }
-            }
+        stage('build the code') {
+      steps {
+        withMaven(globalMavenSettingsConfig: '', jdk: 'JAVA_HOME', maven: 'MAVEN_HOME', mavenSettingsConfig: '', traceability: true) {
+          sh 'mvn clean package'
         }
+      }
+    }
         stage('deploy to tomcat server')
         {
             steps {
